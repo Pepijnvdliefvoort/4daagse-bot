@@ -1,13 +1,16 @@
+"""
+Module to check for available tickets through a proxy.
+"""
+
 import requests
 import time
 import webbrowser
-import certifi
 import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
 URL = "https://atleta.cc/api/graphql"
-API_KEY = "" # API Key from CrawlBase
+API_KEY = ""  # API Key from CrawlBase
 PROXY_URL = "smartproxy.crawlbase.com:8012"
 
 HEADERS = {
@@ -26,14 +29,18 @@ HEADERS = {
     "sec-fetch-mode": "cors",
     "sec-fetch-site": "same-origin",
     "sec-fetch-storage-access": "active",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+    "user-agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+    ),
 }
 
 # GraphQL query payload copied from the cURL request
 DATA = {
     "operationName": "GetRegistrationsForSale",
-    "variables": {"id": "zRLhtOq7pOcB", "tickets": None, "limit": -1}, # zRLhtOq7pOcB = 107de 4Daagse eventID
-    "query": """query GetRegistrationsForSale($id: ID!, $tickets: [String!], $limit: Int!) {
+    "variables": {"id": "zRLhtOq7pOcB", "tickets": None, "limit": -1},
+    "query": """
+    query GetRegistrationsForSale($id: ID!, $tickets: [String!], $limit: Int!) {
       event(id: $id) {
         id
         registrations_for_sale_count
@@ -66,7 +73,9 @@ def check_tickets(counter):
     proxy_url = f"http://{API_KEY}:@{PROXY_URL}"
     proxies = {"http": proxy_url, "https": proxy_url}
     try:
-        response = requests.post(URL, headers=HEADERS, json=DATA, proxies=proxies, timeout=10, verify=False)
+        response = requests.post(
+            URL, headers=HEADERS, json=DATA, proxies=proxies, timeout=10, verify=False
+        )
 
         if response.status_code == 200:
             data = response.json()
@@ -74,7 +83,8 @@ def check_tickets(counter):
 
             if event and event.get("registrations_for_sale"):
                 available_tickets = [
-                    ticket for ticket in event["registrations_for_sale"] if ticket["resale"]["available"]
+                    ticket for ticket in event["registrations_for_sale"]
+                    if ticket["resale"]["available"]
                 ]
 
                 if available_tickets:
