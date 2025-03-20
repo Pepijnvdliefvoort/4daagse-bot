@@ -1,5 +1,5 @@
 """
-Module to check for available tickets through a proxy.
+Module to check for available tickets with a minimum of 10 seconds delay
 """
 
 import requests
@@ -10,8 +10,6 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 URL = "https://atleta.cc/api/graphql"
-API_KEY = ""  # API Key from CrawlBase
-PROXY_URL = "smartproxy.crawlbase.com:8012"
 
 HEADERS = {
     "accept": "*/*",
@@ -70,43 +68,38 @@ DATA = {
 
 def check_tickets(counter):
     """Sends request through a proxy and checks for available tickets"""
-    proxy_url = f"http://{API_KEY}:@{PROXY_URL}"
-    proxies = {"http": proxy_url, "https": proxy_url}
-    try:
-        response = requests.post(
-            URL, headers=HEADERS, json=DATA, proxies=proxies, timeout=10, verify=False
-        )
+    
+    response = requests.post(
+          URL, headers=HEADERS, json=DATA, timeout=10
+      )
 
-        if response.status_code == 200:
-            data = response.json()
-            event = data.get("data", {}).get("event", {})
+    if response.status_code == 200:
+        data = response.json()
+        event = data.get("data", {}).get("event", {})
 
-            if event and event.get("registrations_for_sale"):
-                available_tickets = [
-                    ticket for ticket in event["registrations_for_sale"]
-                    if ticket["resale"]["available"]
-                ]
+        if event and event.get("registrations_for_sale"):
+            available_tickets = [
+                ticket for ticket in event["registrations_for_sale"]
+                if ticket["resale"]["available"]
+            ]
 
-                if available_tickets:
-                    print(f"\n🎟️ Tickets Available! Request: {counter} | Proxy: {proxies}")
-                    for ticket in available_tickets:
-                        ticket_title = ticket["ticket"]["title"]
-                        price = ticket["resale"]["total_amount"]
-                        url = ticket["resale"]["public_url"]
-                        print(f"- {ticket_title}: €{price} | [Buy Here]({url})")
-                        webbrowser.open(url)  # Automatically opens in the default browser
-                else:
-                    print(f"❌ No available tickets. Request: {counter} | Proxy: {proxies}")
-
+            if available_tickets:
+                print(f"\nTicket(s) available! Request: {counter}")
+                for ticket in available_tickets:
+                    ticket_title = ticket["ticket"]["title"]
+                    price = ticket["resale"]["total_amount"]
+                    url = ticket["resale"]["public_url"]
+                    print(f"- {ticket_title}: €{price} | [Buy Here]({url})")
+                    webbrowser.open(url)  # Automatically opens in the default browser
             else:
-                print(f"❌ No tickets available. Request: {counter} | Proxy: {proxies}")
+                print(f"No available tickets. Request: {counter}")
 
         else:
-            print(f"⚠️ Error {response.status_code}: {response.text} | Proxy: {proxies}")
+          print(f"No tickets available. Request: {counter}")
 
-    except requests.exceptions.RequestException as e:
-        print(f"⚠️ Proxy Error: {e} | Switching Proxy...")
-
+    else:
+        print(f"Error {response.status_code}: {response.text}")
+        
 counter = 0
 while True:
     check_tickets(counter)
