@@ -104,4 +104,4 @@ counter = 0
 while True:
     check_tickets(counter)
     counter += 1
-    time.sleep(1)  # Adjust interval if needed
+    time.sleep(11)  # Adjust interval if needed
