@@ -1,7 +1,7 @@
 # 4daagse-bot
 Request bot for Nijmeegse vierdaagse.
 [request.py](https://github.com/Pepijnvdliefvoort/4daagse-bot/blob/main/request.py) uses proxies and a faster interval for more rapid requests from different proxies to prevent _429: Too Many Requests_.
-Meanwhile [request.py](https://github.com/Pepijnvdliefvoort/4daagse-bot/blob/main/slow-request.py) uses the default 10 second interval, without any tricks to bypass the intended (10s) delay. Slower but requires no CrawlBase
+Meanwhile [slow-request.py](https://github.com/Pepijnvdliefvoort/4daagse-bot/blob/main/slow-request.py) uses the default 10 second interval, without any tricks to bypass the intended (10s) delay. Slower but requires no CrawlBase
 
 ## Prerequisites
 * [CrawlBase](https://crawlbase.com/) account
