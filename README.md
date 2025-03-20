@@ -2,7 +2,7 @@
 Request bot for Nijmeegse vierdaagse
 
 # Prerequisites
-* CrawlBase account
+* [CrawlBase](https://crawlbase.com/) account
 
 # Setup
 1. Fill in your API key from CrawlBase in the API_KEY variable (optionally, add a .env file)
