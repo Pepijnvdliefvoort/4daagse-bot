@@ -1,10 +1,11 @@
 # 4daagse-bot
 Request bot for Nijmeegse vierdaagse
 
-# Prerequisites
+## Prerequisites
 * [CrawlBase](https://crawlbase.com/) account
 
-# Setup
+## Setup
+
 1. Fill in your API key from CrawlBase in the API_KEY variable (optionally, add a .env file)
 2. Fill in your session ID
 It's located in the Inspect *Network* tab under *Request Headers* as `atleta-session-id`
@@ -13,5 +14,5 @@ It's located in the Inspect *Network* tab under *Request Headers* as `atleta-ses
 It's located under *Payload* `variables->{id: xxx}`
 ![image](https://github.com/user-attachments/assets/1b900be7-6016-4765-9023-63512e02424e)
 
-# Running
+## Running
 Run [request.py](https://github.com/Pepijnvdliefvoort/4daagse-bot/blob/main/request.py) script.
