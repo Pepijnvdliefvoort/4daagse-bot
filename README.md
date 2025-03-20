@@ -14,4 +14,4 @@ It's located under *Payload* `variables->{id: xxx}`
 ![image](https://github.com/user-attachments/assets/1b900be7-6016-4765-9023-63512e02424e)
 
 # Running
-Run python script.
+Run [request.py](https://github.com/Pepijnvdliefvoort/4daagse-bot/main/request.py) script.
